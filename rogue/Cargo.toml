@@ -1,0 +1,14 @@
+#rogue in rust
+
+[package]
+name = "rogue"
+version = "0.0.1"
+#description = ""
+#homepage = ""
+#repository = ""
+keywords = ["rogue", "ncurses", "rust"]
+license = "MIT"
+authors = ["david.huddle"]
+
+[dependencies.sdl2]
+path="/dev/dhuddle_/rust/rust-sdl2"

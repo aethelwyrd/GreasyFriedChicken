@@ -1,0 +1,8 @@
+[package]
+
+name = "sfml"
+version = "0.0.1"
+authors = ["david.huddle"]
+
+[dependencies.rust-sfml]
+git = "https://github.com/jeremyletang/rust-sfml.git"
