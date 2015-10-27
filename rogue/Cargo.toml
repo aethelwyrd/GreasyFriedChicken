@@ -6,9 +6,16 @@ version = "0.0.1"
 #description = ""
 #homepage = ""
 #repository = ""
-keywords = ["rogue", "ncurses", "rust"]
+keywords = ["rogue", "piston", "rust"]
 license = "MIT"
 authors = ["david.huddle"]
 
-[dependencies.sdl2]
-path="/dev/dhuddle_/rust/rust-sdl2"
+[[bin]]
+name = "rusty-rogue"
+
+[dependencies]
+piston = "0.13.0"
+piston2d-graphics = "0.10.0"
+pistoncore-glutin_window = "0.16.0"
+piston2d-opengl_graphics = "0.15.0"
+
