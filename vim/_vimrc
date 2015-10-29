@@ -51,6 +51,8 @@ if has("unix")
     endif
 else
     "TODO fix for winders
+    "make directory for ShowMarks
+    "C:\Users\david.huddle\vim\plugged\ShowMarks\doc
 endif
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
