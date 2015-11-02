@@ -3,10 +3,10 @@
 
 #[cfg(test)]
 mod test{
-    use my_other_mod::*;
+    use main_mod::*;
 
     #[test]
-    fn i_am_a_test(){
+    fn test_in_mod(){
         let x = cmp(2, 10);
         match x{
             Ordering::Less => assert!(true),
@@ -16,7 +16,7 @@ mod test{
     }
 
     #[test]
-    fn test2(){
+    fn test_fn_used_only_in_test(){
         assert!(used_only_in_test()==235);
     }
 }

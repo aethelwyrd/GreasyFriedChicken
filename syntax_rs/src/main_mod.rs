@@ -1,12 +1,9 @@
-//my_other_mod.rs
+//main_mod.rs
 //Copyright 2015 David Huddle
 
-    pub fn used_only_in_test() -> i32{
+    #[allow(dead_code)]
+    pub fn used_only_in_test()->i32{
         235
-    }
-
-    pub fn play_ground(bob:i32){
-        println!("this is bob: {}", bob);
     }
 
     pub fn match_is_like_switch(x:i32, y:i32){

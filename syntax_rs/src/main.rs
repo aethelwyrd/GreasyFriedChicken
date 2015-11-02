@@ -5,7 +5,7 @@ mod my_module;
 mod main_mod;
 mod test;
 
-use my_other_mod::*;
+use main_mod::*;
 
 fn main() {
     console_out();
@@ -46,6 +46,9 @@ fn main() {
     my_module::range_matching(0.5);
     my_module::range_matching(1.5);
     my_module::tuple_struct();
+    my_module::iterator_example();
+    my_module::fizz_buzz((1..20).collect::<Vec<_>>());
+    my_module::fizz_buzz2((1..20).collect::<Vec<_>>());
 
     //play_ground
     let ref mut myvar = 45i32;
@@ -60,7 +63,7 @@ fn play_ground(bob:i32){
 }
 
 #[test]
-fn locale_test(){
-    #[should_panic]
-    assert(false);
+#[should_panic]
+fn test_in_main(){
+    assert!(false);
 }
