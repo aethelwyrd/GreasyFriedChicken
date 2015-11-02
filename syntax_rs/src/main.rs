@@ -1,18 +1,16 @@
 //rusty.rs
+//Copyright 2015 David Huddle
 
 mod my_module;
+mod main_mod;
+mod test;
+
+use main_mod::*;
 
 fn main() {
     console_out();
-    //switch, if, struct
-    let x = 4i32;
-    let y = 2i32;
-    match cmp(x,y){
-        Ordering::Less => println!("Less"),
-        Ordering::Greater => println!("Greater"),
-        Ordering::Equal => println!("Equal"),
-    }
-    for_ex();
+    match_is_like_switch(2,5);
+    for_in_is_for_each();
     while_ex();
     loop_ex();
     //vector
@@ -48,63 +46,24 @@ fn main() {
     my_module::range_matching(0.5);
     my_module::range_matching(1.5);
     my_module::tuple_struct();
+    my_module::iterator_example();
+    my_module::fizz_buzz((1..20).collect::<Vec<_>>());
+    my_module::fizz_buzz2((1..20).collect::<Vec<_>>());
+
+    //play_ground
+    let ref mut myvar = 45i32;
+    *myvar = 22i32;
+    let myothervar = &myvar;
+    play_ground(**myothervar);
+//    play_ground(myothervar);
 }
 
-fn console_out(){
-    println!("lisard king");
+fn play_ground(bob:i32){
+    println!("this is bob: {}", bob);
 }
 
-fn cmp(x: i32, y: i32) -> Ordering {
-    if x < y { Ordering::Less }
-    else if x > y { Ordering::Greater }
-    else { Ordering::Equal }
+#[test]
+#[should_panic]
+fn test_in_main(){
+    assert!(false);
 }
-
-enum Ordering { Less, Greater, Equal }
-
-fn print_option(x: Option<i32>) {
-    match x {
-        Some(val) => println!("value is {}", val),
-        None => {
-            println!("cannot print null")
-        }
-    }
-}
-
-fn vector_mod_by_ref( nums: &mut Vec<i32>) {
-    for x in nums {
-        *x = *x + 1; 
-    }
-}
- 
-fn vector_interation_by_ref( nums: &Vec<i32>){
-    for x in nums{
-        println!("{} is in vec", x);
-    }
- }
-
-fn loop_ex(){
-    let mut a: i32 = 3i32;
-    loop{
-        a = a + 1i32;
-        println!("loop{}", a);
-        if a > 5i32 { break; }
-    }
-}
-
-fn while_ex(){
-    let mut z = 0i32;
-    let mut done = false;
-    while !done {
-        println!("while{}", z);
-        z = z + 1;
-        if z == 5 { done = true; }
-    }
-}
-
-fn for_ex(){
-    for x in 0i32..6i32{
-        println!("for:{}", x);
-    }
-}
-
