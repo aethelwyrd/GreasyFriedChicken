@@ -61,7 +61,8 @@ Plug 'rking/ag.vim'
 Plug 'scrooloose/syntastic'
 Plug 'sheerun/vim-polyglot'
 Plug 'rust-lang/rust.vim'
-"Plug 'kien/ctrlp.vim'
+Plug 'racer-rust/vim-racer'
+Plug 'kien/ctrlp.vim'
 "Plug 'majutsushi/tagbar'
 "Plug 'vim-scripts/SearchComplete'
 "Plug 'vim-scripts/ShowMarks'
@@ -75,6 +76,7 @@ Plug 'rust-lang/rust.vim'
 call plug#end()
 
 ""key mappings##################################################################
+:let mapleader = "\<Space>"
 nmap <leader>cd :lcd %:p:h<CR>:pwd<CR>
 nmap <leader>pc :!p4 edit %<CR>
 nmap <leader>pr :!p4 revert %<CR>
@@ -84,6 +86,7 @@ nmap <leader>ft :ts <c-r><c-w><CR>
 nmap <leader>bs :ls<CR>:e #
 nmap <leader>, :vertical resize -5<CR>
 nmap <leader>. :vertical resize +5<CR> 
+map! <c-o> <c-x>
 "setup for NerdTree
 "map <C-n> :NERDTreeToggle<CR>
 " Configure backspace so it acts as it should act
@@ -107,9 +110,17 @@ if has("nvim")
 endif
 "Find macro
 command! -nargs=1 Findall :vimgrep/<args>/gj **/*.*
-command! -nargs=1 Findmost :vimgrep/<args>/gj **/*.{cpp,h,hpp,cs,c,as,sln,props,proj,xml} | copen
+command! -nargs=1 Findmost :vimgrep/<args>/gj **/*.{cpp,h,hpp,cs,c,as,sln,props,proj,xml, rs} | copen
 command! -nargs=1 Findcpp :vimgrep/<args>/gj **/*.{cpp,h,hpp} | copen
 command! -nargs=1 Buf :call BufSel("<args>")
+"setup for racer rust autocomplete
+if has("unix")
+    let g:racer_cmd = "~/dev/racer/target/release/racer"
+    let $RUST_SRC_PATH="~/dev/rust/src/"
+else
+    let g:racer_cmd = "d:/dev/dhuddle_/racer/target/release/racer"
+    let $RUST_SRC_PATH="d:/dev/dhuddle_/rust/src/"
+endif
 "setup for ctrlp
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
