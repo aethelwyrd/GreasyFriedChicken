@@ -3,14 +3,19 @@
 
 use std::thread;
 
-pub fn do_thread(){
-    let nums = 1..20;
+/// Spawns num_threads threads. Each thread counts to work_items on the console
+/// 
+/// # Examples 
+/// //Spawns five threads that each count to 10
+///
+/// do_thread(5,10);
+pub fn do_thread(num_threads:i32, work_items: i32){
+    let nums = 1..num_threads;
     let handles: Vec<_> = nums.into_iter().map(|num|{
-            let bob = num;
             thread::spawn(move || {
-                    println!("roger wilco {}", bob);
-                    do_work(bob);
-                    println!("wtf, over{}", bob);
+                    println!("roger wilco {}", num);
+                    do_work(num, work_items);
+                    println!("wtf, over{}", num);
                 })
             }).collect();
     for h in handles {
@@ -18,9 +23,15 @@ pub fn do_thread(){
     }
 }
 
-fn do_work(thread_no: i32){
-    let work = 1..30;
+/// Prints work_items number of console statements
+/// 
+/// # Examples 
+/// do_work(5,10);
+fn do_work(thread_no: i32, work_items: i32){
+    let work = 1..work_items;
     for w in work {
         println!("thread: {} work: {}", thread_no, w);
+        thread::sleep_ms(10);
     }
 }
+

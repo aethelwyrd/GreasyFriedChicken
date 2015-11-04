@@ -1,11 +1,15 @@
 //main.rs
 //Copyright 2015 David Huddle
 
-mod thread_simple;
-mod thread_share;
+pub mod thread_simple;
+pub mod thread_share;
 
-fn main(){
+/// Program to play with rust features and do learning
+pub fn main(){
     println!("i kinda work some of the time");
-
-    thread_simple::do_thread();
+ 
+    thread_simple::do_thread(10, 30);
+    thread_share::shared_data_example(10,30);
+    thread_share::shared_data_example2();
 }
+
