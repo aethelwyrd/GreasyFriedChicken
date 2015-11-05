@@ -12,12 +12,12 @@ use std::thread;
 pub fn do_thread(num_threads:i32, work_items: i32){
     let nums = 1..num_threads;
     let handles: Vec<_> = nums.into_iter().map(|num|{
-            thread::spawn(move || {
-                    println!("roger wilco {}", num);
-                    do_work(num, work_items);
-                    println!("wtf, over{}", num);
-                })
-            }).collect();
+        thread::spawn(move || {
+            println!("roger wilco {}", num);
+            do_work(num, work_items);
+            println!("wtf, over{}", num);
+        })
+    }).collect();
     for h in handles {
         h.join().unwrap();
     }

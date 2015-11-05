@@ -2,50 +2,77 @@
 //Copyright 2015 David Huddle
 
 use std::thread;
-use std::sync::{Arc,Mutex};
+use std::sync::{Arc,mpsc};
 
-/// Takes some data makes four copies and modifies each copy in a thread
-///
-///# Examples 
-/// shared_data_example(100,5);
-pub fn shared_data_example(max_data:i32, thread_count:i32){
-    //this takes some data makes four copies and modifies each in a thread
-    println!("shared_data_example");
-    let data = Arc::new(Mutex::new(Vec::new()));
-    for i in 1..max_data{
-        data.lock().unwrap().push(i);
+extern crate time;
+
+/// takes a vector and modifies in on a different thread
+pub fn do_amazing_things(data:Vec<i32>)->Vec<i32>{
+    let (tx, rx) = mpsc::channel();
+    let tx = tx.clone();
+    thread::spawn(move || {
+        let mut ret = Vec::new();
+        for x in data {
+            ret.push(x * 7);
+        }
+        tx.send(ret);
+    });
+
+    rx.recv().ok().expect("Could not receive answer")
+}
+
+/// Takes a vec and breaks it up to do calculations
+pub fn do_calc(data: Vec<i32>)->Vec<i32>{
+    let mut package = vec![data];
+    let start = time::precise_time_ns();
+    for _ in 0..2 {
+        package = break_vec(package);
     }
+    let stop =  time::precise_time_ns();
+    println!("split time: {}", stop - start);
 
-    for i in 0..thread_count {
-        let data = data.clone();
-        println!("thread: {} ",i);
+    let count = package.len();
+    let (tx, rx) = mpsc::channel();
+    for vec in package {
+        let tx = tx.clone();
+        let data_t = vec;
         thread::spawn(move || {
-            let mut data = data.lock().unwrap();
-            //TODO make the max_data work 
-            //let count:i32 = max_data - 1;
-            for x in (0..10){
-                data[x] += i*10;
-                println!("thread: {} data: {}",i, data[x]);
-                thread::sleep_ms(10);
+            let mut ret = Vec::new();
+            for x in data_t {
+                ret.push(x * 7);
             }
+            tx.send(ret);
         });
     }
 
-    thread::sleep_ms(5000);
-//TODO be nice to use data after we modified it
-//    let x = data.unwrap().unwrap();
-//    for i in x {
-//        println!("shared data: {}", i);
-//    }
+    let mut ret:Vec<i32> = Vec::new();
+    for _ in 0..count {
+        let mut source = rx.recv().ok().expect("Could not receive answer");
+        ret.append(&mut source);
+    }
+    ret
+}
+
+/// Takes the vectors inside a vector and splits them in half
+/// No checking is done to miss rounding errors
+fn break_vec(data: Vec<Vec<i32>>)->Vec<Vec<i32>>{
+    let mut ret: Vec<Vec<i32>> = Vec::new();
+    for mut vec in data {
+        let size = vec.len()/2;
+        let vec1 = vec.split_off(size);
+        ret.push(vec);
+        ret.push(vec1);
+    }
+    ret
 }
 
 /// Takes some data makes four copies and modifies each copy in a thread
 ///
 ///# Examples 
-pub fn shared_data_example2(){
+pub fn shared_data_example(){
     //never do it this way thread::sleep is there to ensure all thread complete
     //clearly not a good idea
-    let numbers: Vec<_> = (5..15u32).collect();
+    let numbers: Vec<_> = (5..15i32).collect();
 
     let shared_numbers = Arc::new(numbers);
 
@@ -65,3 +92,30 @@ pub fn shared_data_example2(){
     thread::sleep_ms(1000);
 }
 
+/// Simple example of multi provider single consumer
+pub fn simple_mpsc()->Vec<i32>{
+    let (tx, rx) = mpsc::channel();
+    for _ in 0..10 {
+        let tx = tx.clone();
+        thread::spawn(move || {
+            let answer = 42;
+            tx.send(answer);
+        });
+    }
+    let mut ret:Vec<i32> = Vec::new();
+    for _ in 0..10 {
+        ret.push(rx.recv().ok().expect("Could not receive answer"));
+    }
+    ret
+}
+
+/// Simple example of spawning a thread and rejoining
+/// Also handles a panic during thread execution for graceful recovery
+pub fn thread_handle(){
+    use std::thread;
+    let handle = thread::spawn(move || {
+        panic!("oops!");
+    });
+    let result = handle.join();
+    assert!(result.is_err());
+}
