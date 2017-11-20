@@ -1,0 +1,12 @@
+[package]
+name = "bingo"
+version = "0.0.1"
+description = "make bingo cards"
+homepage = ""
+repository = ""
+keywords = ["bingo", "rust"]
+license = "MIT"
+authors = ["David <aethelwyrd@gmail.com>"]
+
+[dependencies]
+rand = "^0.3.0"
