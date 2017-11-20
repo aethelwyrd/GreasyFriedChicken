@@ -1,8 +1,0 @@
-[package]
-
-name = "sfml"
-version = "0.0.1"
-authors = ["david.huddle"]
-
-[dependencies]
-sfml = { git = "https://github.com/jeremyletang/rust-sfml.git" }
